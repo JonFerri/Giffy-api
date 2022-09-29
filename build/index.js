@@ -1,7 +1,14 @@
 import express from 'express';
-import router from './router.js';
+import userRouter from './users/userRouter.js';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import cors from 'cors';
+import path from 'path';
+import url from 'url';
+const filename = url.fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
+console.log(path.resolve(dirname, "index.html"));
+console.log({ dirname, filename });
 //enviroment variables
 dotenv.config();
 //App
@@ -15,7 +22,12 @@ const connection = process.env.DB_CONNECTION;
 mongoose.connect(connection, () => {
     console.log("connected to the database");
 });
-app.get("/prove", (req, res) => {
-    res.send("getting started");
+//middleware
+app.use(cors({
+    origin: "*"
+}));
+app.use(express.json());
+app.get("/", (req, res) => {
+    res.sendFile(path.resolve(dirname, "index.html"));
 });
-app.use("/api", router);
+app.use("/api/users", userRouter);
