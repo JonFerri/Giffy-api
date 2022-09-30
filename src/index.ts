@@ -1,19 +1,19 @@
 import express, {Response,Request} from 'express'
 import userRouter from './users/userRouter.js'
-import dotenv from 'dotenv'
 import mongoose, { mongo } from 'mongoose'
 import cors from 'cors'
 import path from 'path'
 import url from 'url'
+import dotenv from 'dotenv'
+
+
+dotenv.config()
 
 const filename = url.fileURLToPath(import.meta.url) 
 const dirname = path.dirname(filename)
 console.log(path.resolve(dirname,"index.html"))
 
 console.log({dirname,filename})
-
-//enviroment variables
-dotenv.config()
 
 //App
 const app = express()
