@@ -1,10 +1,12 @@
 import express, {Response,Request} from 'express'
-import userRouter from './users/userRouter.js'
 import mongoose, { mongo } from 'mongoose'
 import cors from 'cors'
 import path from 'path'
 import url from 'url'
 import dotenv from 'dotenv'
+import userRouter from './users/userRouter.js'
+import loginRouter from './login/login.js'
+import favRouter from './favourites/favRouter.js'
 
 
 dotenv.config()
@@ -34,7 +36,10 @@ app.use(cors({
     origin:"*"
 }));
 app.use(express.json())
+
 app.get("/", (req: Request, res: Response)=>{
     res.sendFile(path.resolve(dirname,"index.html"))
 })
 app.use("/api/users", userRouter)
+app.use("/api/login", loginRouter)
+app.use("/api/favs", favRouter)

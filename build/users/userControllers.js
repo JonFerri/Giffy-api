@@ -1,4 +1,5 @@
 import User from "./userModel.js";
+import bcrypt from 'bcrypt';
 const userControllers = {
     async getAllUsers(req, res) {
         try {
@@ -10,9 +11,12 @@ const userControllers = {
         }
     },
     async saveUser(req, res) {
-        const user = req.body;
-        const userToSave = new User(user);
         try {
+            const user = req.body;
+            const salt = await bcrypt.genSalt();
+            const hashedPassword = await bcrypt.hash(req.body.password, salt);
+            user.password = hashedPassword;
+            const userToSave = new User(user);
             const userSaved = await userToSave.save();
             res.json(userSaved);
         }
@@ -25,6 +29,15 @@ const userControllers = {
         try {
             const deletedUser = await User.findByIdAndDelete(id);
             res.json(deletedUser);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    },
+    async deleteAllUsers(req, res) {
+        try {
+            const deletedUsers = await User.deleteMany();
+            res.json(deletedUsers);
         }
         catch (error) {
             console.log(error);
