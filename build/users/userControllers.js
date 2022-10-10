@@ -11,8 +11,17 @@ const userControllers = {
         }
     },
     async saveUser(req, res) {
+        const user = req.body;
         try {
-            const user = req.body;
+            const userExists = await User.findOne({ nickName: user.nickName });
+            if (userExists) {
+                return res.status(401).json({ message: "user already exists", userExists });
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+        try {
             const salt = await bcrypt.genSalt();
             const hashedPassword = await bcrypt.hash(req.body.password, salt);
             user.password = hashedPassword;

@@ -2,23 +2,45 @@ import { Request, Response, NextFunction } from 'express'
 import Favourite from './favModel.js'
 import jwt from 'jsonwebtoken'
 
-// interface UserRequest extends Request {
-//     user: any
-// }
-
 const favControllers = {
     async getFavs (req: any, res: Response) {
-        const userName =  req.user.nickName
-        const favs = await Favourite.find({user:userName})
+        const user =  req.user.nickName
+        const favs = await Favourite.find({userName:user})
         res.send(favs)
     },
-    async createFav (req: Request, res: Response) {
+    async createFav (req: any, res: Response) {
         try{
-            const fav = req.body
+            const fav = {
+                userName: req.user.nickName,
+                giff: req.body.giff
+            }
             const favToSave = new Favourite(fav)
             const favSaved = await favToSave.save();
             res.json(favSaved)
+        
         } catch (error:any) {
+            console.log(error)
+        }
+    },
+    async deleteFav (req: any, res: Response){
+        try {
+            const id = req.params.id
+            const userName = req.user.nickName
+            const deletedFav = await Favourite.findByIdAndDelete({_id: id})
+            res.json(deletedFav)
+            
+        } catch (error) {
+            console.log(error)
+        }
+        
+    }
+    ,
+    async deleteAllFavs (req: Request, res: Response){
+        
+        try {
+            const deletedFavs = await Favourite.deleteMany()
+            res.json(deletedFavs)
+        } catch (error) {
             console.log(error)
         }
     }
@@ -33,7 +55,7 @@ export function authenticateToken (req: any, res: Response, next: NextFunction) 
     const secret = process.env.ACCES_TOKEN_SECRET as string
      
     jwt.verify(token, secret, (err:any, user:any)=> {
-        if (err) return res.sendStatus(403)
+        if (err) return res.status(403).json(err)
         req.user = user
         next()
     })

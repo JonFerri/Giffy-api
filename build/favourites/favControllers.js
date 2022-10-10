@@ -1,20 +1,40 @@
 import Favourite from './favModel.js';
 import jwt from 'jsonwebtoken';
-// interface UserRequest extends Request {
-//     user: any
-// }
 const favControllers = {
     async getFavs(req, res) {
-        const userName = req.user.nickName;
-        const favs = await Favourite.find({ user: userName });
+        const user = req.user.nickName;
+        const favs = await Favourite.find({ userName: user });
         res.send(favs);
     },
     async createFav(req, res) {
         try {
-            const fav = req.body;
+            const fav = {
+                userName: req.user.nickName,
+                giff: req.body.giff
+            };
             const favToSave = new Favourite(fav);
             const favSaved = await favToSave.save();
             res.json(favSaved);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    },
+    async deleteFav(req, res) {
+        try {
+            const id = req.params.id;
+            const userName = req.user.nickName;
+            const deletedFav = await Favourite.findByIdAndDelete({ _id: id });
+            res.json(deletedFav);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    },
+    async deleteAllFavs(req, res) {
+        try {
+            const deletedFavs = await Favourite.deleteMany();
+            res.json(deletedFavs);
         }
         catch (error) {
             console.log(error);
@@ -29,7 +49,7 @@ export function authenticateToken(req, res, next) {
     const secret = process.env.ACCES_TOKEN_SECRET;
     jwt.verify(token, secret, (err, user) => {
         if (err)
-            return res.sendStatus(403);
+            return res.status(403).json(err);
         req.user = user;
         next();
     });

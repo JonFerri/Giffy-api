@@ -1,8 +1,6 @@
 import { Request, Response } from "express"
 import User from "./userModel.js"
-import bcrypt, { hashSync } from 'bcrypt'
-
-
+import bcrypt from 'bcrypt'
 
 const userControllers = {
     async getAllUsers (req: Request, res:Response){
@@ -15,8 +13,17 @@ const userControllers = {
     },
     async saveUser (req: Request, res: Response){
         
+        const user = req.body
+
         try {
-            const user = req.body
+            const userExists = await User.findOne({nickName:user.nickName})
+            if (userExists) {
+                return res.status(401).json({message: "user already exists", userExists})
+            }
+        } catch (error: any) {
+            console.log(error)
+        }
+        try {
             const salt = await bcrypt.genSalt()
             const hashedPassword = await bcrypt.hash(req.body.password,salt)
             user.password = hashedPassword
