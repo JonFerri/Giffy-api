@@ -17,7 +17,7 @@ const favControllers = {
             res.json(favSaved);
         }
         catch (error) {
-            console.log(error);
+            res.json({ thisistheerror: error });
         }
     },
     async deleteFav(req, res) {
@@ -47,9 +47,9 @@ export function authenticateToken(req, res, next) {
     if (token == null)
         return res.sendStatus(401);
     const secret = process.env.ACCES_TOKEN_SECRET;
-    jwt.verify(token, secret, (err, user) => {
-        if (err)
-            return res.status(403).json(err);
+    jwt.verify(token, secret, (error, user) => {
+        if (error)
+            return res.status(403).json({ error });
         req.user = user;
         next();
     });

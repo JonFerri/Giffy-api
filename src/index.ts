@@ -13,9 +13,7 @@ dotenv.config()
 
 const filename = url.fileURLToPath(import.meta.url) 
 const dirname = path.dirname(filename)
-console.log(path.resolve(dirname,"index.html"))
 
-console.log({dirname,filename})
 
 //App
 const app = express()

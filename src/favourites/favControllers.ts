@@ -19,7 +19,7 @@ const favControllers = {
             res.json(favSaved)
         
         } catch (error:any) {
-            console.log(error)
+            res.json({thisistheerror: error})
         }
     },
     async deleteFav (req: any, res: Response){
@@ -54,8 +54,9 @@ export function authenticateToken (req: any, res: Response, next: NextFunction) 
 
     const secret = process.env.ACCES_TOKEN_SECRET as string
      
-    jwt.verify(token, secret, (err:any, user:any)=> {
-        if (err) return res.status(403).json(err)
+    jwt.verify(token, secret, (error:any, user:any)=> {
+        if (error) return res.status(403).json({error})
+        
         req.user = user
         next()
     })

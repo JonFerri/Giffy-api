@@ -1,10 +1,5 @@
 import mongoose from "mongoose";
 const { model, Schema } = mongoose;
-const GiffSchema = new Schema({
-    title: String,
-    id: String,
-    url: String
-});
 const UserSchema = new Schema({
     nickName: {
         type: String,
