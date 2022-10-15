@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import userRouter from './users/userRouter.js';
 import loginRouter from './login/login.js';
 import favRouter from './favourites/favRouter.js';
+import User from './users/userModel';
 dotenv.config();
 const filename = url.fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -30,8 +31,14 @@ app.use(express.json());
 app.get("/", (req, res) => {
     res.send("Wellcome to the homePage");
 });
-app.get("/users", (req, res) => {
-    res.send("wellcome to the users page");
+app.get("/users", async (req, res) => {
+    try {
+        const users = await User.find();
+        res.json(users);
+    }
+    catch (error) {
+        console.log(error);
+    }
 });
 app.use("/api/users", userRouter);
 app.use("/api/login", loginRouter);

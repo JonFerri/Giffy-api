@@ -7,7 +7,7 @@ import dotenv from 'dotenv'
 import userRouter from './users/userRouter.js'
 import loginRouter from './login/login.js'
 import favRouter from './favourites/favRouter.js'
-
+import User from './users/userModel'
 
 dotenv.config()
 
@@ -42,8 +42,13 @@ app.use(express.json())
 app.get("/", (req: Request, res: Response)=>{
     res.send("Wellcome to the homePage")
 })
-app.get("/users",(req:any,res:any)=> {
-    res.send("wellcome to the users page")
+app.get("/users", async (req:any,res:any)=> {
+    try {
+        const users = await User.find()
+        res.json(users)
+    } catch (error) {
+        console.log(error)            
+    }
 })
 app.use("/api/users", userRouter)
 app.use("/api/login", loginRouter)
