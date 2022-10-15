@@ -8,6 +8,9 @@
     "dev": "nodemon build/index.js",
     "start": "node build/index.js"
   },
+  "engines": {
+    "node": "16.x"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
