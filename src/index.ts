@@ -42,6 +42,9 @@ app.use(express.json())
 app.get("/", (req: Request, res: Response)=>{
     res.send("Wellcome to the homePage")
 })
+app.get("/users",(req:any,res:any)=> {
+    res.send("wellcome to the users page")
+})
 app.use("/api/users", userRouter)
 app.use("/api/login", loginRouter)
 app.use("/api/favs", favRouter)
