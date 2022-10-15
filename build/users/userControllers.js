@@ -1,6 +1,15 @@
 import User from "./userModel.js";
 import bcrypt from 'bcrypt';
 const userControllers = {
+    async UsersTest(req, res) {
+        try {
+            const users = { users: [{ name: "carlos", surname: "rodriguez" }] };
+            res.json(users);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    },
     async getAllUsers(req, res) {
         try {
             const users = await User.find();
