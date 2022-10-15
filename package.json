@@ -6,7 +6,7 @@
   "scripts": {
     "test": "nmp run test",
     "dev": "nodemon build/index.js",
-    "start": "node index.js"
+    "start": "node build/index.js"
   },
   "engines": {
     "node": "14.x"
