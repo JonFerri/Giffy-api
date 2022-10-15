@@ -11,6 +11,8 @@ import favRouter from './favourites/favRouter.js'
 
 dotenv.config()
 
+
+
 const filename = url.fileURLToPath(import.meta.url) 
 const dirname = path.dirname(filename)
 
@@ -19,7 +21,9 @@ const dirname = path.dirname(filename)
 const app = express()
 
 //Server
-app.listen(3030, ()=> {
+
+const PORT = process.env.PORT || 3030
+app.listen(PORT, ()=> {
     console.log("listening on port 3030")
 })
 

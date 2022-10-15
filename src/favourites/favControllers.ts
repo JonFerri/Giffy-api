@@ -5,8 +5,8 @@ import jwt from 'jsonwebtoken'
 const favControllers = {
     async getFavs (req: any, res: Response) {
         const user =  req.user.nickName
-        const favs = await Favourite.find({userName:user})
-        res.send(favs)
+        const info = await Favourite.find({userName:user})
+        res.send({info})
     },
     async createFav (req: any, res: Response) {
         try{
@@ -16,10 +16,10 @@ const favControllers = {
             }
             const favToSave = new Favourite(fav)
             const favSaved = await favToSave.save();
-            res.json(favSaved)
+            res.json({favSaved})
         
         } catch (error:any) {
-            res.json({thisistheerror: error})
+            res.json({error})
         }
     },
     async deleteFav (req: any, res: Response){
@@ -41,7 +41,7 @@ const favControllers = {
             const deletedFavs = await Favourite.deleteMany()
             res.json(deletedFavs)
         } catch (error) {
-            console.log(error)
+            res.status(400).json(error)
         }
     }
 }
@@ -49,8 +49,9 @@ const favControllers = {
 export function authenticateToken (req: any, res: Response, next: NextFunction) {
     const authHeader = req.headers['authorization']
     const token = authHeader?.split(" ")[1]
+    
 
-    if (token == null) return res.sendStatus(401)
+    if (token == undefined) return res.status(401).json({error: "Token missing"})
 
     const secret = process.env.ACCES_TOKEN_SECRET as string
      

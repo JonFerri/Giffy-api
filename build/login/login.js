@@ -19,7 +19,7 @@ loginRouter.post('/login', async (req, res) => {
         //In case user authenticates correctly, generate token and send it along the user
         //information, such as list of favourites
         const secret = process.env.ACCES_TOKEN_SECRET;
-        const accesToken = jwt.sign(user, secret, { expiresIn: 300 });
+        const accesToken = jwt.sign(user, secret, { expiresIn: "10h" });
         const userFavs = await Favourite.find({ userName: user.nickName });
         const favs = userFavs.map(userFav => userFav.giff);
         res.send({ accesToken, userName: user.nickName, favs });

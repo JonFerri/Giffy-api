@@ -28,7 +28,7 @@ loginRouter.post('/login', async (req: Request, res: Response)=>{
 
 
         const secret = process.env.ACCES_TOKEN_SECRET as string
-        const accesToken = jwt.sign(user, secret, {expiresIn: 300})
+        const accesToken = jwt.sign(user, secret, {expiresIn: "10h"})
         
         const userFavs = await Favourite.find({userName: user.nickName})
         const favs = userFavs.map(userFav => userFav.giff)

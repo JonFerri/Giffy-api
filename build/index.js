@@ -13,7 +13,8 @@ const dirname = path.dirname(filename);
 //App
 const app = express();
 //Server
-app.listen(3030, () => {
+const PORT = process.env.PORT || 3030;
+app.listen(PORT, () => {
     console.log("listening on port 3030");
 });
 //Database
