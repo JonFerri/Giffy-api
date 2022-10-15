@@ -1,5 +1,5 @@
 import express, {Response,Request} from 'express'
-import mongoose, { mongo } from 'mongoose'
+import mongoose from 'mongoose'
 import cors from 'cors'
 import path from 'path'
 import url from 'url'
@@ -24,7 +24,7 @@ const app = express()
 
 const PORT = process.env.PORT || 3030
 app.listen(PORT, ()=> {
-    console.log("listening on port 3030")
+    console.log(`Server running on port ${PORT}`)
 })
 
 //Database
@@ -40,7 +40,7 @@ app.use(cors({
 app.use(express.json())
 
 app.get("/", (req: Request, res: Response)=>{
-    res.sendFile(path.resolve(dirname,"index.html"))
+    res.send("Wellcome to the homePage")
 })
 app.use("/api/users", userRouter)
 app.use("/api/login", loginRouter)

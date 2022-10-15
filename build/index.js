@@ -15,7 +15,7 @@ const app = express();
 //Server
 const PORT = process.env.PORT || 3030;
 app.listen(PORT, () => {
-    console.log("listening on port 3030");
+    console.log(`Server running on port ${PORT}`);
 });
 //Database
 const connection = process.env.DB_CONNECTION;
@@ -28,7 +28,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.get("/", (req, res) => {
-    res.sendFile(path.resolve(dirname, "index.html"));
+    res.send("Wellcome to the homePage");
 });
 app.use("/api/users", userRouter);
 app.use("/api/login", loginRouter);
