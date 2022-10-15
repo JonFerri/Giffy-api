@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 import userRouter from './users/userRouter.js';
 import loginRouter from './login/login.js';
 import favRouter from './favourites/favRouter.js';
-import User from './users/userModel';
+import User from './users/userModel.js';
 dotenv.config();
 const filename = url.fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
