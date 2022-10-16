@@ -4,8 +4,9 @@
   "description": "Rest api giffy",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
     "test": "nmp run test",
-    "dev": "nodemon build/index.js",
+    "dev": "tsc && nodemon build/index.js",
     "start": "node build/index.js"
   },
   "engines": {
